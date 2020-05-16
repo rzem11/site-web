@@ -1,13 +1,4 @@
-<?php
-include "../cores/produitC.php";
- $prod=new produitC;
-    if (isset($_GET['key'])) {
-        $listP = $prod->rechercheproduit($_GET['key']);
-    } else {
-        $listP = $prod->afficherproduit();
-    }
 
-?>
 
 <!DOCTYPE html>
 <html>
@@ -46,7 +37,7 @@ include "../cores/produitC.php";
       <div class="col-xs-12">
         <h2 class="page-header">
           <br>
-          <h1><i class="fa fa-globe">Liste des produits</i> </h1>
+          <h1><i class="fa fa-globe"></i> </h1>
           
         </h2>
       </div>
@@ -93,12 +84,15 @@ include "../cores/produitC.php";
 </tr>
 </thead>
   <tbody class="body">
-    
-    <?php
-          foreach ($listP as $prod)
-{
-
-echo('<tr>');
+<?php
+include 'config.php';
+ if (isset($_GET['id']))
+{   $id=$_GET['id'];
+   $req="select * from prod where id=".$_GET['id'];
+$db=config::getConnection();
+$listP=$db->query($req) ;
+        foreach ($listP as $prod)
+        {echo('<tr>'); 
 echo('<td> <img src="produits/'.$prod['photo'].'" width="100" height="100" /> </td>'); 
 
 echo('<td>'.$prod['ref'].'</td>');
@@ -112,10 +106,15 @@ echo('<td>'.$prod['prixVG'].'</td>');
 echo('<td>'.$prod['prixVL'].'</td>');
 
 echo('<td>'.$prod['carac'].'</td>');
-echo('</tr>');
-}
-?>
-             
+
+          
+       }
+
+}      
+   ?>
+
+    
+    
                   
   
 </table>

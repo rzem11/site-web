@@ -1,3 +1,27 @@
+<!--A Design by W3layouts
+   Author: W3layout
+   Author URL: http://w3layouts.com
+   License: Creative Commons Attribution 3.0 Unported
+   License URL: http://creativecommons.org/licenses/by/3.0/
+   -->
+   <?php
+
+include "../cores/produitC.php";
+$req="select * from prod";
+$db=config::getConnection();
+$listP=$db->query($req) ;
+
+
+$prod=new produitC;
+    if (isset($_GET['key']))
+     {
+        $listP = $prod->rechercherprod($_GET['key']);
+    } 
+    else {
+        $listP = $prod->afficherproduit();
+    }
+
+?>
 <!DOCTYPE html>
 <html lang="zxx">
    <head>
@@ -44,7 +68,7 @@
                   <ul>
                      <li>
                         <span class="fas fa-phone-volume"></span>
-                        <p> +216 96334402</p>
+                        <p> +(216) 96334402</p>
                      </li>
                      <li>
                         <span class="fas fa-envelope"></span>
@@ -58,11 +82,11 @@
             <div class="container-fluid">
                <div class="hedder-up row">
                   <div class="col-lg-3 col-md-3 logo-head">
-                     <h1><a class="navbar-brand" href="prodALL.php">ERAYEN</a></h1>
+                     <h1><a class="navbar-brand" href="index.html">ERAYEN</a></h1>
                   </div>
                   <div class="col-lg-5 col-md-6 search-right">
-                     <form class="form-inline my-lg-0">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search">
+                     <form method="get" class="form-inline my-lg-0">
+                        <input class="form-control mr-sm-2" name="key" type="search" placeholder="Search">
                         <button class="btn" type="submit">Search</button>
                      </form>
                   </div>
@@ -96,7 +120,7 @@
                <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                   <ul class="navbar-nav ">
                      <li class="nav-item active">
-                        <a class="nav-link" href="prodALL.php">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
                      </li>
                      <li class="nav-item">
                         <a href="about.html" class="nav-link">About</a>
@@ -135,9 +159,9 @@
                      <div class="slider-img one-img">
                         <div class="container">
                            <div class="slider-info ">
-                              <h5>Choisissez votre meuble <br>préféré</h5>
+                              <h5>Choisissez vos meubles <br>préférés</h5>
                               <div class="bottom-info">
-                                 <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Aenean commodo ligula eget dolorL orem ipsum dolor sit amet eget dolor</p>
+                              
                               </div>
                               <div class="outs_more-buttn">
                                  <a href="#">Read More</a>
@@ -150,9 +174,9 @@
                      <div class="slider-img two-img">
                         <div class="container">
                            <div class="slider-info ">
-                              <h5>choisissez votre meuble <br>preféré</h5>
+                              <h5>choisissez vos meubles <br>preférés</h5>
                               <div class="bottom-info">
-                                 <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Aenean commodo ligula eget dolorL orem ipsum dolor sit amet eget dolor</p>
+                                 <p>ERAYEN, Meubles à petit prix.</p>
                               </div>
                               <div class="outs_more-buttn">
                                  <a href="#">Read More</a>
@@ -165,10 +189,7 @@
                      <div class="slider-img three-img">
                         <div class="container">
                            <div class="slider-info">
-                              <h5>Choisissez votre meuble<br> preféré</h5>
-                              <div class="bottom-info">
-                                 <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Aenean commodo ligula eget dolorL orem ipsum dolor sit amet eget dolor</p>
-                              </div>
+                              <h5>Choisissez vos meubles<br> preférés</h5>
                               <div class="outs_more-buttn">
                                  <a href="#">Read More</a>
                               </div>
@@ -178,10 +199,6 @@
                   </li>
                </ul>
             </div>
-            <!-- This is here just to demonstrate the callbacks -->
-            <!-- <ul class="events">
-               <li>Example 4 callback events</li>
-               </ul>-->
             <div class="clearfix"></div>
          </div>
       </div>
@@ -189,43 +206,44 @@
       <!-- about -->
       <section class="about py-lg-4 py-md-3 py-sm-3 py-3" id="about">
          <div class="container py-lg-5 py-md-5 py-sm-4 py-4">
-            <h3 class="title text-center mb-lg-5 mb-md-4  mb-sm-4 mb-3">Articles sous promotion</h3>
+            <h3 class="title text-center mb-lg-5 mb-md-4  mb-sm-4 mb-3">Nos Articles</h3>
             <div class="row banner-below-w3l">
-               <div class="col-lg-4 col-md-6 col-sm-6 text-center banner-agile-flowers">
-                  <img src="images/a1.jpg" class="img-thumbnail" alt="">
-                  <div class="banner-right-icon">
-                     <h4 class="pt-3">Table +3 vases</h4>
-                  </div>
-               </div>
-               <div class="col-lg-4 col-md-6 col-sm-6 text-center banner-agile-flowers">
-                  <img src="images/a2.jpg" class="img-thumbnail" alt="">
-                  <div class="banner-right-icon">
-                     <h4 class="pt-3">lit</h4>
-                  </div>
-               </div>
-               <div class="col-lg-4 col-md-6 col-sm-6 text-center banner-agile-flowers">
-                  <img src="images/a3.jpg" class="img-thumbnail" alt="">
-                  <div class="banner-right-icon">
-                     <h4 class="pt-3">Canapé 2 places</h4>
-                  </div>
-               </div>
-               <div class="col-lg-4 col-md-6 col-sm-6 mt-3 text-center banner-agile-flowers">
-                  <img src="images/a4.jpg" class="img-thumbnail" alt="">
-                  <div class="banner-right-icon">
-                     <h4 class="pt-3">table moderne</h4>
-                  </div>
-               </div>
-               <div class="col-lg-4 col-md-6 col-sm-6 mt-3 text-center banner-agile-flowers">
-                  <img src="images/a5.jpg" class="img-thumbnail" alt="">
-                  <div class="banner-right-icon">
-                     <h4 class="pt-3">salle a manger</h4>
-                  </div>
-               </div>
-               <div class="col-lg-4 col-md-6 col-sm-6 mt-3 text-center banner-agile-flowers">
-                  <img src="images/a6.jpg" class="img-thumbnail" alt="">
-                  <div class="banner-right-icon">
-                     <h4 class="pt-3">salon moderne</h4>
-                  </div>
+              
+            <?php
+foreach ($listP as $prod)
+{ 
+
+$id=$prod['id'];
+$photo=$prod['photo'];
+$nomP=$prod['nomP'];
+$prixVL=$prod['prixVL'];
+
+echo ('<div class="col-lg-4 col-md-6 col-sm-6 mt-3 text-center banner-agile-flowers">');
+echo('<img class="img-thumbnail" src="produits/');
+echo ($photo); 
+echo('"style="height:300px"/>');
+echo('</br>');
+echo($nomP);
+echo('</br>');
+echo(' <p class="price"> ');
+echo($prixVL);
+echo(' Dt </p>');
+echo('<a href="about.php?id=');
+echo($id);
+echo('"> ACHETER!!!!');
+echo('</a>');
+echo('<input type="hidden" value="'); echo $id; 
+echo('" name="id">');
+
+
+echo('</h4>');
+echo ('</div>');
+echo ('</br>');
+echo ('</br>');
+}
+
+
+?>
                </div>
                <div class="toys-grids-upper">
                   <div class="about-toys-off">

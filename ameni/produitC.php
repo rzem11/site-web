@@ -1,5 +1,5 @@
 <?PHP
-include "../config.php";
+include "../Views/config.php";
 include('../entities/produit.php');
 class produitC
 {
@@ -58,17 +58,6 @@ class produitC
       die('Erreur: ' . $e->getMessage());
     }
   }
-  function triprod(){
-		$sql="SElECT * From prod ORDER BY nomP";
-		$db = config::getConnection();
-		try{
-		$liste=$db->query($sql);
-		return $liste;
-		}
-        catch (Exception $e){
-            die('Erreur: '.$e->getMessage());
-        }	
-	}
 
 	
 }
