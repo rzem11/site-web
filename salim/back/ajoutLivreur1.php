@@ -12,7 +12,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>DC Admin - modifier</title>
+    <title>DC Admin - ajout</title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -35,7 +35,7 @@
             <i class="fas fa-bars"></i>
         </button>
 
-        <-- Navbar Search -->
+        <!-- Navbar Search -->
         <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search for..." aria-label="Search"
@@ -121,14 +121,11 @@
                     <span>Pages</span>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-                    <h6 class="dropdown-header">Login Screens:</h6>
-                    <a class="dropdown-item" href="login.html">Login</a>
-                    <a class="dropdown-item" href="register.html">Register</a>
-                    <a class="dropdown-item" href="forgot-password.html">Forgot Password</a>
+                    <h6 class="dropdown-header"> Screens:</h6>
+                    <a class="dropdown-item" href="#">add smthing here</a>
                     <div class="dropdown-divider"></div>
                     <h6 class="dropdown-header">Other Pages:</h6>
-                    <a class="dropdown-item active" href="404.html">404 Page</a>
-                    <a class="dropdown-item" href="blank.html">Blank Page</a>
+                    <a class="dropdown-item active" href="#">add smthing here</a>
                 </div>
             </li>
             <li class="nav-item">
@@ -158,96 +155,57 @@
                         <a href="home.php">Dashboard</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="GestionLivraison.php">Gestion des livraisons</a>
+                        <a href="GestionLivreur.php">Gestion des livreurs</a>
                     </li>
-                    <li class="breadcrumb-item active">modifier une livraison</li>
+                    <li class="breadcrumb-item active">ajouter un livreur</li>
                 </ol>
 
                 <!-- Page Content -->
-                
+
+
+
                 <div class="container">
                     <div class="card card-register mx-auto mt-5">
-                        <div class="card-header">Modifier</div>
+                        <div class="card-header">Veuillez saisir les informations suivantes</div>
                         <div class="card-body">
-                        <?PHP
-                            include "../core/LivreurC.php";
-                            include "../entities/Livreur.php";
-                            include "../entities/livraison.php";
-                            if (isset($_GET['idL'])){
-                                $LivraisonC=new LivraisonC();
-                                $result=$LivraisonC->recupererLivraison($_GET['idL']);
-                                foreach($result as $row){
-                                    $codeC=$row['codeC'];
-                                    $idL=$row['idL'];
-                                    $dateL=$row['dateL'];
-                                    $idLivreur=$row['idLivreur'];
-                                    $descL=$row['descL'];
-                        ?>
-                            <form method="POST">
-                                <input type="hidden" name="idL" value=<?PHP echo $_GET['idL'];?>>
-                                    <div class="form-group">
+                            <form method="POST" action="ajoutLivreur.php">
+                                <div class="form-group">
                                     <div class="form-label-group">
-                                        <input type="number" id="CodeC" name="codeC" class="form-control" value="<?PHP echo $codeC ?>"
-                                            placeholder="Commande ID" max="99999999" required="required" disabled>
-                                        <label for="CodeC">Commande ID</label>
+                                        <input type="number" id="idLivreur" name="idLivreur" class="form-control" placeholder="Identifiant"
+                                            max="99999999" required="required" disabled>
+                                        <label for="idLivreur">Identifiant(générer automatiquement)</label>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="form-label-group">
-                                        <input type="number" id="idL" name="idL" class="form-control" value="<?PHP echo $idL ?>"
-                                            placeholder="Identifiant" max="99999999" required="required" disabled>
-                                        <label for="idL">Identifiant</label>
+                                        <input type="text" id="nomL" name="nomL" class="form-control" placeholder="Nom et prénom"
+                                            required="required">
+                                        <label for="nomL">Nom et prénom</label>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="form-label-group">
-                                        <input type="date" id="dateL" name="dateL" value="<?PHP echo $dateL ?>"
-                                            class="form-control" placeholder="Date de livraison" required="required">
-                                        <label for="numL">Date de livraison</label>
+                                        <input type="number" id="numL" name="numL" class="form-control"
+                                            placeholder="Numéro de téléphone" max="99999999" required="required">
+                                        <label for="numL">Numéro de téléphone</label>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <!--<div class="form-group">
                                     <div class="form-label-group">
-                                        <select type="number" id="idLivreur" name="idLivreur" value="<?PHP echo $idLivreur ?>" 
-                                            class="form-control" placeholder="ID livreur" required="required">
-                                            <option> <?PHP echo $idLivreur ?> </option>
-                                            <?PHP
-                                            
-                                            $Livreur1C=new LivreurC();
-                                            $listeLivreur=$Livreur1C->afficherLivreur();
-                                            foreach($listeLivreur as $row){
-                                            ?>
-                                            <option  value="<?php echo $row['idLivreur'] ?>"> <?php echo $row['idLivreur'] ?></option>
-                                            <?php } ?>
-                                        </select>
+                                        <input type="number" id="mailL" name="mailL" class="form-control"
+                                            placeholder="Adresse éléctronique" required="required">
+                                        <label for="mailL">Adresse éléctronique</label>
                                     </div>
-                                </div>
-                            
+                                </div>-->
                                 <div class="form-group">
                                     <div class="form-label-group">
-                                        <select type="text" id="descL" name="descL" class="form-control" value="<?PHP echo $descL ?>"
-                                            placeholder="Etat" required="required">
-                                            <option> <?PHP echo $descL ?> </option>
-                                            <option> Livrée </option>
-                                            <option> En cours </option>
-                                            <option> Annulée </option>
-                                        </select>
+                                        <input type="text" id="zoneL" name="zoneL" class="form-control" placeholder="Zone de livraison"
+                                            required="required">
+                                        <label for="zoneL">Zone de livraison</label>
                                     </div>
                                 </div>
                                 <input class="btn btn-primary btn-block" type="submit" name="Confirmer" value="Confirmer">
                             </form>
-                        <?PHP
-                            }
-                        }
-                            if (isset($_POST['Confirmer'])){
-                                $Livraison=new Livraison($_POST['codeC'],$_POST['idL'],$_POST['dateL'],$_POST['idLivreur'],$_POST['descL']);
-                                $LivraisonC->modifierLivraison($Livraison,$_POST['idL']);
-                        ?> 
-                                
-                                <script>window.location="GestionLivraison.php";</script>
-                        <?php        
-                            }
-                        ?>
                         </div>
                     </div>
                 </div>
@@ -267,8 +225,8 @@
         </div>
         <!-- /.content-wrapper -->
 
-    <!--</div>
-     /#wrapper -->
+    </div>
+    <!-- /#wrapper -->
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">

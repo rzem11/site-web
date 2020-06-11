@@ -1,12 +1,6 @@
-<?PHP
-  include "../core/livreurC.php";
-  
-  session_start();
-
-  $Livreur1C=new LivreurC();
-  $listeLivreurs=$Livreur1C->afficherLivreur();
+<?php
+    session_start(); 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,7 +12,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>DC Admin - Gestion des livreurs</title>
+  <title>DC Admin - Dashboard</title>
 
   <!-- Custom fonts for this template-->
   <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -44,8 +38,7 @@
     <!-- Navbar Search -->
     <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search for..." aria-label="Search"
-          aria-describedby="basic-addon2">
+        <input type="text" class="form-control" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
         <div class="input-group-append">
           <button class="btn btn-primary" type="button">
             <i class="fas fa-search"></i>
@@ -57,8 +50,7 @@
     <!-- Navbar -->
     <ul class="navbar-nav ml-auto ml-md-0">
       <li class="nav-item dropdown no-arrow mx-1">
-        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-bell fa-fw"></i>
           <span class="badge badge-danger">9+</span>
         </a>
@@ -70,8 +62,7 @@
         </div>
       </li>
       <li class="nav-item dropdown no-arrow mx-1">
-        <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-envelope fa-fw"></i>
           <span class="badge badge-danger">7</span>
         </a>
@@ -83,8 +74,7 @@
         </div>
       </li>
       <li class="nav-item dropdown no-arrow">
-        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-user-circle fa-fw"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
@@ -95,15 +85,15 @@
         </div>
       </li>
       <?php
-          if(isset($_SESSION['user'])){
-        ?>
-        <h6><div style="color:#fff9;" class="mt-2"><?php echo 'Bonjour ' .$_SESSION['user'] ?></div></h6>
-        <?php
-          } 
-          else{ 
-            header("location:index.php"); 
-          }
-        ?>
+            if(isset($_SESSION['user'])){
+          ?>
+          <h6><div style="color:#fff9;" class="mt-2"><?php echo 'Bonjour ' .$_SESSION['user'] ?></div></h6>
+          <?php
+            } 
+            else{ 
+              header("location:index.php"); 
+            }
+          ?>
     </ul>
 
   </nav>
@@ -112,15 +102,14 @@
 
     <!-- Sidebar -->
     <ul class="sidebar navbar-nav">
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link" href="home.php">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span>
         </a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-fw fa-folder"></i>
           <span>Pages</span>
         </a>
@@ -145,8 +134,8 @@
           <i class="fas fa-fw fa-box"></i>
           <span>Gestion des livraisons</span></a>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="">
+      <li class="nav-item">
+        <a class="nav-link" href="GestionLivreur.php">
           <i class="fas fa-truck"></i>
           <span>Gestion des livreurs</span></a>
       </li>
@@ -159,76 +148,97 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="home.php">Dashboard</a>
+            <a href="#">Dashboard</a>
           </li>
-          <li class="breadcrumb-item active">Gestion des livreurs</li>
+          <li class="breadcrumb-item active">Overview</li>
         </ol>
-        <a class="nav-link" href="ajoutLivreur1.php">
-          <i class="fas fa-plus-circle"></i>
-          <span>Ajouter un livreur</span></a><br>
 
-        <!-- DataTables Example -->
-        <div class="card mb-3">
-          <div class="card-header">
-            <i class="fas fa-table"></i>
-            Table des livreurs</div>
-          <div class="card-body">
-            <div class="nav-item">
-              <div class="table-hover">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                  <thead>
-                    <tr>
-                      <th>Identifiant</th>
-                      <th>Nom et prénom</th>
-                      <th>Numéro tel</th>
-                      <th>Zone livraison</th>
-                      <th></th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  <?PHP
-				            foreach($listeLivreurs as $row){
-			            ?>
-                  <tr>    
-                    <td><?PHP echo $row['idLivreur']; ?></td>
-                    <td><?PHP echo $row['nomL']; ?></td>
-                    <td><?PHP echo $row['numL']; ?></td>
-                    <td><?PHP echo $row['zoneL']; ?></td>
-                    <td>
-                        <a href="modifierLivreur.php?idLivreur=<?PHP echo $row['idLivreur']; ?>"> Modifier </a>
-                    </td>
-                    <td>
-                        <a href="supprimerLivreur.php?idLivreur=<?PHP echo $row['idLivreur']; ?>"> Supprimer </a>
-                    </td>
-                  </tr>
-                  <?PHP
-                    }
-                  ?>   
-                  </tbody>
-                </table>
+        <!-- Icon Cards-->
+        <div class="row">
+          <div class="col-xl-3 col-sm-6 mb-3">
+            <div class="card text-white bg-primary o-hidden h-100">
+              <div class="card-body">
+                <div class="card-body-icon">
+                  <i class="fas fa-fw fa-comments"></i>
+                </div>
+                <div class="mr-5">0 New Messages!</div>
               </div>
+              <a class="card-footer text-white clearfix small z-1" href="#">
+                <span class="float-left">View Details</span>
+                <span class="float-right">
+                  <i class="fas fa-angle-right"></i>
+                </span>
+              </a>
             </div>
           </div>
-          <form class="form-inline" method="post" action="pdf.php">
-						<button type="submit"  id="pdf" name="generate_pdf" class="btn btn-primary" style="margin-left: 83%;"><i class="fas fa-file-pdf" aria-hidden="true"></i>
-						Télécharger en pdf</button>
-					</form><br>
-          <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+          <div class="col-xl-3 col-sm-6 mb-3">
+            <div class="card text-white bg-warning o-hidden h-100">
+              <div class="card-body">
+                <div class="card-body-icon">
+                  <i class="fas fa-fw fa-shopping-cart"></i>
+                </div>
+                <div class="mr-5">0 New Orders!</div>
+              </div>
+              <a class="card-footer text-white clearfix small z-1" href="#">
+                <span class="float-left">View Details</span>
+                <span class="float-right">
+                  <i class="fas fa-angle-right"></i>
+                </span>
+              </a>
+            </div>
+          </div>
+          <div class="col-xl-3 col-sm-6 mb-3">
+            <div class="card text-white bg-danger o-hidden h-100">
+              <div class="card-body">
+                <div class="card-body-icon">
+                  <i class="fas fa-fw fa-list"></i>
+                </div>
+                <div class="mr-5">0 New Claims!</div>
+              </div>
+              <a class="card-footer text-white clearfix small z-1" href="#">
+                <span class="float-left">View Details</span>
+                <span class="float-right">
+                  <i class="fas fa-angle-right"></i>
+                </span>
+              </a>
+            </div>
+          </div>
+          <div class="col-xl-3 col-sm-6 mb-3">
+            <div class="card text-white bg-success o-hidden h-100">
+              <div class="card-body">
+                <div class="card-body-icon">
+                  <i class="fas fa-fw fa-life-ring"></i>
+                </div>
+                <div class="mr-5">0 Deliveries!</div>
+              </div>
+              <a class="card-footer text-white clearfix small z-1" href="#">
+                <span class="float-left">View Details</span>
+                <span class="float-right">
+                  <i class="fas fa-angle-right"></i>
+                </span>
+              </a>
+            </div>
+          </div>
         </div>
 
-        <p class="small text-center text-muted my-5">
-          <em>More table examples coming soon...</em>
-        </p>
-
-      </div>
+        <!-- Area Chart Example-->
+        <div class="card mb-3">
+          <div class="card-header">
+            <i class="fas fa-chart-area"></i>
+            Area Chart Example</div>
+          <div class="card-body">
+            <canvas id="myAreaChart" width="100%" height="30"></canvas>
+          </div>
+          <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        </div>
+        
       <!-- /.container-fluid -->
 
       <!-- Sticky Footer -->
       <footer class="sticky-footer">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Salim Copyright © 2020</span>
+            <span>Copyright © Your Website 2019</span>
           </div>
         </div>
       </footer>
@@ -245,8 +255,7 @@
   </a>
 
   <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -268,10 +277,11 @@
   <script src="../vendor/jquery/jquery.min.js"></script>
   <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Core plugin JavaScript(page top animation)-->
+  <!-- Core plugin JavaScript-->
   <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Page level plugin JavaScript-->
+  <script src="../vendor/chart.js/Chart.min.js"></script>
   <script src="../vendor/datatables/jquery.dataTables.js"></script>
   <script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
 
@@ -280,6 +290,7 @@
 
   <!-- Demo scripts for this page-->
   <script src="../js/demo/datatables-demo.js"></script>
+  <script src="../js/demo/chart-area-demo.js"></script>
 
 </body>
 

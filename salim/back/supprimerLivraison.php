@@ -1,5 +1,5 @@
 <?PHP
-	include "core/LivraisonC.php";
+	include "../core/LivraisonC.php";
 
 	echo $_GET['idL'];
 $Livraison1C=new LivraisonC();

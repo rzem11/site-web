@@ -1,8 +1,10 @@
 <?PHP
-include "core/livraisonC.php";
+    include "../core/livraisonC.php";
+    
+    session_start();
 
-$Livraison1C=new LivraisonC();
-$listeLivraisons=$Livraison1C->afficherLivraison();
+    $Livraison1C=new LivraisonC();
+    $listeLivraisons=$Livraison1C->afficherLivraison();
 ?>
 
 <!DOCTYPE html>
@@ -19,13 +21,13 @@ $listeLivraisons=$Livraison1C->afficherLivraison();
     <title>DC Admin - Gestion des livreurs</title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <!-- Page level plugin CSS-->
-    <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+    <link href="../vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin.css" rel="stylesheet">
+    <link href="../css/sb-admin.css" rel="stylesheet">
 
 </head>
 
@@ -33,7 +35,7 @@ $listeLivraisons=$Livraison1C->afficherLivraison();
 
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-        <a class="navbar-brand mr-1" href="index.html">Lucid Dreamers</a>
+        <a class="navbar-brand mr-1" href="home.php">Lucid Dreamers</a>
 
         <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
             <i class="fas fa-bars"></i>
@@ -92,6 +94,18 @@ $listeLivraisons=$Livraison1C->afficherLivraison();
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
                 </div>
             </li>
+            <?php
+                if(isset($_SESSION['user'])){
+            ?>
+            <h6><div style="color:#fff9;" class="mt-2"><?php echo 'Bonjour ' .$_SESSION['user'] ?></div></h6>
+            <?php
+                } 
+                else{
+            ?>
+            <script>window.location="index.php";</script>
+            <?php 
+                }
+            ?>
         </ul>
 
     </nav>
@@ -101,7 +115,7 @@ $listeLivraisons=$Livraison1C->afficherLivraison();
         <!-- Sidebar -->
         <ul class="sidebar navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="home.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
@@ -128,11 +142,6 @@ $listeLivraisons=$Livraison1C->afficherLivraison();
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Charts</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span></a>
-            </li>
             <li class="nav-item active">
                 <a class="nav-link" href="GestionLivraison.php">
                     <i class="fas fa-fw fa-box"></i>
@@ -140,7 +149,7 @@ $listeLivraisons=$Livraison1C->afficherLivraison();
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="GestionLivreur.php">
-                    <i class="fas fa-fw fa-user-alt"></i>
+                    <i class="fas fa-truck"></i>
                     <span>Gestion des livreurs</span></a>
             </li>
         </ul>
@@ -152,11 +161,13 @@ $listeLivraisons=$Livraison1C->afficherLivraison();
                 <!-- Breadcrumbs-->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="index.html">Dashboard</a>
+                        <a href="home.php">Dashboard</a>
                     </li>
                     <li class="breadcrumb-item active">Gestion des livraisons</li>
                 </ol>
-
+                <a class="nav-link" style="left: auto;" href="ajoutLivraison.php">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Ajouter une livraison</span></a><br>
                 <!-- DataTable des livraisons -->
                 <div class="card mb-3">
                     <div class="card-header">
@@ -164,9 +175,6 @@ $listeLivraisons=$Livraison1C->afficherLivraison();
                         Table des livraisons</div>
                     <div class="card-body">
                         <div class="nav-item">
-                            <a class="nav-link" style="left: auto;" href="ajoutLivraison.php">
-                                <i class="fas fa-plus-circle"></i>
-                                <span>Ajouter une livraison</span></a><br>
                             <div class="table-hover">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
@@ -174,8 +182,8 @@ $listeLivraisons=$Livraison1C->afficherLivraison();
                                             <th>Commande ID</th>
                                             <th>Identifiant</th>
                                             <th>Date</th>
-                                            <th>ID de livreur</th>
-                                            <th>Description</th>
+                                            <th>ID livreur</th>
+                                            <th>Etat</th>
                                             <th></th>
                                             <th></th>
                                         </tr>
@@ -203,6 +211,10 @@ $listeLivraisons=$Livraison1C->afficherLivraison();
                             </div>
                         </div>
                     </div>
+                    <form method="post" action="pdf.php">
+						<button type="submit"  id="pdf" name="pdf" class="btn btn-primary" style="margin-left: 83%;"><i class="fas fa-file-pdf" aria-hidden="true"></i>
+						Télécharger en pdf</button>
+					</form><br>
                     <div class="card-footer small text-muted">Table Updated</div>
                 </div>
 
@@ -247,28 +259,28 @@ $listeLivraisons=$Livraison1C->afficherLivraison();
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="logout.php?logout">Logout</a>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript(page top animation)-->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Page level plugin JavaScript-->
-    <script src="vendor/datatables/jquery.dataTables.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+    <script src="../vendor/datatables/jquery.dataTables.js"></script>
+    <script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin.min.js"></script>
+    <script src="../js/sb-admin.min.js"></script>
 
     <!-- Demo scripts for this page-->
-    <script src="js/demo/datatables-demo.js"></script>
+    <script src="../js/demo/datatables-demo.js"></script>
 
 </body>
 

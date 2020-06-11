@@ -1,3 +1,35 @@
+<?php
+include "../core/commandeC.php";
+include "../core/panier.class.php";
+//include "../front/core/panier.class.php";
+session_start();
+$db = config::getConnexion();
+
+$commandeC=new commandeC($db);
+$listecommande=$commandeC->recuperercommande($db);
+
+if(isset($_GET['new_etat'])){
+$commandeC->modifieretat($_GET['id'],$_GET['new_etat']);
+}
+
+
+    if (isset($_POST['key'])) {
+        $listecommande = $commandeC->recherchecommande($_POST['key']);
+        //var_dump($listecommande);
+    }
+    
+
+if (isset($_POST['del_id']))
+{
+  $idd=$_POST['del_id'];
+  $sql="DELETE FROM commande where id_commande=".$idd;
+    $db = config::getConnexion();
+        $req=$db->prepare($sql);
+                    $req->execute();
+
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +41,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>DC Admin - Charts</title>
+  <title>DC Admin - Tables</title>
 
   <!-- Custom fonts for this template-->
   <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -26,14 +58,22 @@
 
   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand mr-1" href="home.php">Lucid Dreamers</a>
+    <a class="navbar-brand mr-1" href="index.html">DolceCasa</a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
       <i class="fas fa-bars"></i>
     </button>
 
     <!-- Navbar Search -->
-    <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+    <form method="POST" action="tables.php">
+                   <input type="text" name="key" placeholder="chercher..." />
+                   <input type="submit" value="chercher" placeholder="chercher..." class="btn btn-default btn-primary" />
+
+                                                </form>
+
+
+  
+    <!--<form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
         <div class="input-group-append">
@@ -42,7 +82,7 @@
           </button>
         </div>
       </div>
-    </form>
+    </form>--!>
 
     <!-- Navbar -->
     <ul class="navbar-nav ml-auto ml-md-0">
@@ -90,7 +130,7 @@
     <!-- Sidebar -->
     <ul class="sidebar navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="home.php">
+        <a class="nav-link" href="index.html">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span>
         </a>
@@ -111,20 +151,15 @@
           <a class="dropdown-item" href="blank.html">Blank Page</a>
         </div>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="charts.html">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Charts</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="GestionLivraison.php">
-          <i class="fas fa-fw fa-box"></i>
-          <span>Gestion des livraisons</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="GestionLivreur.php">
-          <i class="fas fa-truck"></i>
-          <span>Gestion des livreurs</span></a>
+      <li class="nav-item active">
+        <a class="nav-link" href="tables.html">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Tables</span></a>
       </li>
     </ul>
 
@@ -135,62 +170,111 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="home.php">Dashboard</a>
+            <a href="#">Dashboard</a>
           </li>
-          <li class="breadcrumb-item active">Charts</li>
+          <li class="breadcrumb-item active">Tables</li>
         </ol>
 
-        <!-- Area Chart Example-->
+        <!-- DataTables Example -->
         <div class="card mb-3">
           <div class="card-header">
-            <i class="fas fa-chart-area"></i>
-            Area Chart Example</div>
+            <i class="fas fa-table"></i>
+            Table des commandes</div>
           <div class="card-body">
-            <canvas id="myAreaChart" width="100%" height="30"></canvas>
+            <div class="table-hover">
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th>ID Commande</th>
+                    <th>Client</th>
+                    <th>Contenu</th>
+                    <th>Date</th>
+                    <th>Montant Commande</th>
+                    <th>etat</th>
+                    
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <th>ID Commande</th>
+                    <th>Client</th>
+                    <th>Contenu</th>
+                    <th>Date</th>
+                    <th>Montant Commande</th>
+                    <th>etat</th>
+                    
+                  </tr>
+                </tfoot>
+                <tbody>
+                                 <?PHP
+                              foreach($listecommande as $row){
+                                ?>
+                  <tr>
+                    <td><?PHP echo $row['id_commande']; ?></td>
+                    <td>
+                      <form method="POST" action="clientC.php">
+                     <center><a href="clientC.php"><input type="submit" name="cc" class="btn btn-info" value="client"></a></center>
+                    <input type="hidden" value="<?PHP echo $row['id_client']; ?>" name="idclient"></form>
+                    </td>
+                    <td><form method="POST" action="contenu.php">
+                     <center><a href="contenu.php"><input type="submit" class="btn btn-secondary" name="maha" value="contenu"></a></center>
+                    <input type="hidden"  value="<?PHP echo $row['id_commande']; ?>" name="idc"></form></td>
+                    <td><?PHP echo $row['dateAchat']; ?></td>
+                    <td><?PHP echo $row['montantC']; ?></td>
+                    <form method="POST" action="validercommande.php">
+                      <td><center><a href="tables.php?new_etat=valide&id=<?PHP echo $row['id_commande']; ?>" class="btn btn-success btn-xs navbar-btn"><i class="fa fa-check"></i></a>
+                        <a href="tables.php?new_etat=en_cours&id=<?PHP echo $row['id_commande']; ?>" class="btn btn-warning btn-xs navbar-btn"><i class="fa fa-cog"></i></a>   
+                                
+                                <br></br>  
+                                   <a href="tables.php?new_etat=Annulee&id=<?PHP echo $row['id_commande']; ?>" class="btn btn-danger btn-xs navbar-btn">annuler<i class="fa fa-close"></i></a> 
+                                   </center> </td> 
+                            </form>
+                        </td>
+                        <form method="POST" action="tables.php">
+                          <input type="hidden" name="del_id" value="<?PHP echo $row['id_commande']; ?>">;
+
+                  <td><input type="submit" value="supprimer" class="btn btn-danger" name="btnDel"> </td>
+ 
+  
+                        </tr>
+                       
+                       </center></td></form>
+           <?PHP
+}?>
+                      <!-- <input type="submit" name="valider" value="valider" ></a></center></td>
+                    <td><center><input type="submit" name="" value="annuler"></a></center>-->
+</td>
+                  </form>
+
+                  </tr>
+ 
+
+
+
+                </tbody>
+                
+                  
+              </table>
+            </div>
           </div>
           <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
         </div>
 
-        <div class="row">
-          <div class="col-lg-8">
-            <div class="card mb-3">
-              <div class="card-header">
-                <i class="fas fa-chart-bar"></i>
-                Bar Chart Example</div>
-              <div class="card-body">
-                <canvas id="myBarChart" width="100%" height="50"></canvas>
-              </div>
-              <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="card mb-3">
-              <div class="card-header">
-                <i class="fas fa-chart-pie"></i>
-                Pie Chart Example</div>
-              <div class="card-body">
-                <canvas id="myPieChart" width="100%" height="100"></canvas>
-              </div>
-              <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-            </div>
-          </div>
-        </div>
-
         <p class="small text-center text-muted my-5">
-          <em>More chart examples coming soon...</em>
+          <em>More table examples coming soon...</em>
         </p>
 
       </div>
       <!-- /.container-fluid -->
 
       <!-- Sticky Footer -->
-      <footer class="sticky-footer">
+      <!--<footer class="sticky-footer">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
             <span>Copyright © Your Website 2019</span>
           </div>
         </div>
-      </footer>
+      </footer>-->
 
     </div>
     <!-- /.content-wrapper -->
@@ -216,7 +300,7 @@
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="index.php">Logout</a>
+          <a class="btn btn-primary" href="login.html">Logout</a>
         </div>
       </div>
     </div>
@@ -229,16 +313,15 @@
   <!-- Core plugin JavaScript-->
   <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
-  <!-- Page level plugin JavaScript-->
-  <script src="../vendor/chart.js/Chart.min.js"></script>
+<!-- Page level plugin JavaScript-->
+    <script src="../vendor/datatables/jquery.dataTables.js"></script>
+    <script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
 
   <!-- Custom scripts for all pages-->
   <script src="../js/sb-admin.min.js"></script>
 
   <!-- Demo scripts for this page-->
-  <script src="../js/demo/chart-area-demo.js"></script>
-  <script src="../js/demo/chart-bar-demo.js"></script>
-  <script src="../js/demo/chart-pie-demo.js"></script>
+  <script src="../js/demo/datatables-demo.js"></script>
 
 </body>
 

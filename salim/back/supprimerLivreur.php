@@ -1,5 +1,5 @@
 <?PHP
-	include "core/LivreurC.php";
+	include "../core/LivreurC.php";
 
 	echo $_GET['idLivreur'];
 $Livreur1C=new LivreurC();
